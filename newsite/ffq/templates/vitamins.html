@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<h1>Vitamins</h1>
+
+<form method="POST" action=""> {% csrf_token %}
+<h4>Not counting multi-vitamins, do you take any of the following preparations?</h4>
+    {{ formset.management_form }}
+    {% for form in formset %}
+    	{% for vitamin in VitaminList %}
+	   			{{vitamin}}
+       	    	<ul>
+           		 {{ form.vitamin_Boolean }}
+        		 Vitamin Amount:    {{ form.vitamin_Amount }}
+        		 </ul>
+   		{% endfor %}
+	{% endfor %}
+<input type='submit' value='Submit' class='btn' />
+</form>
+{% endblock %}

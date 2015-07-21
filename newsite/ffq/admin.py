@@ -1,17 +1,15 @@
 from django.contrib import admin
 
-from .models import Question, Choice, Identify
+from .models import User, VitaminData
 
 
 
-class ChoiceInline(admin.TabularInline):
-    model = Choice
-    extra = 2
+class VitaminDataInline(admin.TabularInline):
+    model = VitaminData
+    extra = 0
 
-class QuestionAdmin(admin.ModelAdmin):
-    model = Question
-    extra = 1
-    inlines = [ChoiceInline]
+class UserAdmin(admin.ModelAdmin):
+    inlines = [VitaminDataInline]
     
-admin.site.register(Question,QuestionAdmin)
-admin.site.register(Identify)
+admin.site.register(User,UserAdmin)
+

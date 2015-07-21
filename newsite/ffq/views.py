@@ -1,16 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import IForm, TestChoice
-from .models import Identify, Question, Choice
+from .forms import UserIDForm, VitaminForm 
+from .models import User, VitaminData
+from django.forms.models import modelformset_factory, inlineformset_factory
+from django.forms import formset_factory
 # Create your views here.
 def identification(request):
-    iform = IForm(request.POST or None)
-    #testform=TestChoice()
+    #Present ID page to user and save info
+    iform = UserIDForm(request.POST or None)
     if iform.is_valid():
-        iNumber = iform.cleaned_data['iNumber']
-        iNumberRepeat = iform.cleaned_data['iNumberRepeat']
+        user_id = iform.cleaned_data['Identification_Number']
+        user_id_repeat = iform.cleaned_data['Please_repeat_Identification_Number']
         save_it=iform.save(commit=False)
-        if str(iNumber)==iNumberRepeat:
+        request.session['testing']=user_id_repeat
+        if str(user_id)==user_id_repeat:
             save_it.save()
             return HttpResponseRedirect("vitamins")
         else:
@@ -18,10 +21,25 @@ def identification(request):
     context ={"iform": iform,}
     template = "identification.html"
     return render(request,template,context)
+    
 def vitamins(request):
-    context ={}
-    template = ""
-    return HttpResponse("Vitamin questions go here")
+    VitaminList=["Vitamin_A", "Pottasium"]
+    VitaminFormset=modelformset_factory(VitaminData, form=VitaminForm)
+    #pull ID object from Identify table
+    if 'testing' in request.session:
+        user_id_repeat=request.session['testing']
+        user_object= get_object_or_404(User, pk=user_id_repeat)
+    #Present vitamin form to user and save info with ID tag 
+    #vform = VitaminForm(request.POST or None)
+    formset=VitaminFormset(request.POST or None)
+    if formset.is_valid():
+  #      save_it=formset.save(commit=False)
+        #save_it.vitamin_Name=x
+  #      save_it.save()
+        return HttpResponse("This might have worked")
+    context ={"formset": formset,"VitaminList": VitaminList }
+    template = "vitamins.html"
+    return render(request,template,context)
 def genq(request):
     context ={}
     template = ""
