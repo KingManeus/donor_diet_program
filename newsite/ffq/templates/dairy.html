@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<h1>Dairy</h1>
+
+<form method="POST" action=""> {% csrf_token %}
+<h4>For each food listed, fill in the circle indicating how often on average you have used the amount specified during the past year.</h4>
+    {{ formset.management_form }}
+	<table style="width:1000">
+		<tr>
+		{% for option in freq_options %}
+		<td> {{ option }}</td>
+		{% endfor%}
+	    </tr>
+    {% for form,food in formzip%}
+			     <tr>
+				<td> <b>{{food}}</b> </td>
+				  {{form.food_freq}}
+			     </tr>
+			{% endfor %}
+			 </table>
+<input type='submit' value='Submit' class='btn' />
+</form>
+{% endblock %}

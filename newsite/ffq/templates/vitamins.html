@@ -8,14 +8,15 @@
 <form method="POST" action=""> {% csrf_token %}
 <h4>Not counting multi-vitamins, do you take any of the following preparations?</h4>
     {{ formset.management_form }}
-    {% for form in formset %}
-    	{% for vitamin in VitaminList %}
-	   			{{vitamin}}
+    {% for form,vitamin in formzip%}
+				<table>
        	    	<ul>
+				 <b>{{vitamin}}</b>
            		 {{ form.vitamin_Boolean }}
-        		 Vitamin Amount:    {{ form.vitamin_Amount }}
+				 {{ form.vitamin_Boolean.help_text}}
+        		 Dose per day:    {{ form.vitamin_Amount }}
         		 </ul>
-   		{% endfor %}
+			 </table>
 	{% endfor %}
 <input type='submit' value='Submit' class='btn' />
 </form>

@@ -16,6 +16,11 @@ class VitaminData(models.Model):
     vitamin_Amount = models.CharField(max_length=50)
     def __unicode__(self):
         return self.vitamin_Name
+class FoodData(models.Model):
+    user= models.ForeignKey(User)
+    food_name=models.CharField(max_length=100)
+    food_freq=models.CharField(max_length=50)
+    food_misc=models.CharField(max_length=50, blank=True, null=True)
 #class Question(models.Model):
 #    identify = models.ForeignKey(Identify)
 #    question_text = models.CharField(max_length=200, default ="")
