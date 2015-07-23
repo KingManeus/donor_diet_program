@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% load staticfiles %}
 
@@ -7,7 +8,7 @@
 <style>
 table {
     border-collapse: collapse;
-	height: 100%;
+	height: 130%;
 }
 
 table, th, td {
@@ -15,7 +16,7 @@ table, th, td {
 	text-align: center;
 }
 </style>
-<h1>Dairy</h1>
+<h1>Beverages</h1>
 
 <form method="POST" action=""> {% csrf_token %}
 <h4>For each food listed, fill in the circle indicating how often on average you have used the amount specified during the past year.</h4>
@@ -37,4 +38,3 @@ table, th, td {
 </form>
 
 {% endblock %}
-
