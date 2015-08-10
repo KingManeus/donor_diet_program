@@ -7,31 +7,47 @@
 <style>
 table {
     border-collapse: collapse;
-	height: 130%;
+	height: 200%;
 }
 
 table, th, td {
     border: 1px solid black;
 	text-align: center;
 }
+#subsection{
+	text-align: left;
+	padding: 5;
+}
 </style>
-<h1>Vegetables</h1>
+<h1></h1>
 
 <form method="POST" action=""> {% csrf_token %}
 <h4>For each food listed, fill in the circle indicating how often on average you have used the amount specified during the past year.</h4>
     {{ formset.management_form }}
 	<table style="width:1200">
 		<tr>
+			<td>FOODS AND AMOUNTS</td> <td colspan="9">AVERAGE USE LAST YEAR</td>
+			
+		</tr>
+		<tr>
+		<td>VEGETABLES <br />Fresh, frozen, or tinned (medium serving)</td>
 		{% for option in freq_options %}
 		<td> {{ option }}</td>
 		{% endfor%}
 	    </tr>
     {% for form,food in formzip%}
+	
 			     <tr>
 				<td> <b>{{food}}</b> </td>
 				  {{form.food_freq}}
 			     </tr>
 			{% endfor %}
+			<tr>
+			<td></td>
+			{% for option in freq_options %}
+			<td> {{ option }}</td>
+			{% endfor%}
+		    </tr>
 			 </table>
 <input type='submit' value='Submit' class='btn' />
 </form>

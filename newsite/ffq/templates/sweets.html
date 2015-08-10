@@ -7,14 +7,19 @@
 <style>
 table {
     border-collapse: collapse;
-	height: 130%;
+	height: 200%;
 }
 
 table, th, td {
     border: 1px solid black;
 	text-align: center;
 }
+#subsection{
+	text-align: left;
+	padding: 5;
+}
 </style>
+<h1></h1>
 
 <form method="POST" action=""> {% csrf_token %}
 <h4>For each food listed, fill in the circle indicating how often on average you have used the amount specified during the past year.</h4>
@@ -25,16 +30,24 @@ table, th, td {
 			
 		</tr>
 		<tr>
-		<td>MEAT AND FISH (medium serving)</td>
+		<td>SWEETS AND SNACKS (medium serving)</td>
 		{% for option in freq_options %}
 		<td> {{ option }}</td>
 		{% endfor%}
 	    </tr>
     {% for form,food in formzip%}
+	{% if food == "Vegetable soups (bowl)"%}
+	<tr><td id = "subsection" colspan="10">SOUPS, SAUCES, AND SPREADS</td></tr>
+     <tr>
+	<td> <b>{{food}}</b> </td>
+	  {{form.food_freq}}
+     </tr>
+	 {% else %}
 			     <tr>
 				<td> <b>{{food}}</b> </td>
 				  {{form.food_freq}}
 			     </tr>
+			{% endif %}	 
 			{% endfor %}
 			<tr>
 			<td></td>

@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 {% load staticfiles %}
 
@@ -8,31 +7,54 @@
 <style>
 table {
     border-collapse: collapse;
-	height: 130%;
+	height: 200%;
 }
 
 table, th, td {
     border: 1px solid black;
 	text-align: center;
 }
+#subsection{
+	text-align: left;
+	padding: 5;
+}
 </style>
-<h1>Beverages</h1>
+<h1></h1>
 
 <form method="POST" action=""> {% csrf_token %}
 <h4>For each food listed, fill in the circle indicating how often on average you have used the amount specified during the past year.</h4>
     {{ formset.management_form }}
 	<table style="width:1200">
 		<tr>
+			<td>FOODS AND AMOUNTS</td> <td colspan="9">AVERAGE USE LAST YEAR</td>
+			
+		</tr>
+		<tr>
+		<td>DRINKS</td>
 		{% for option in freq_options %}
 		<td> {{ option }}</td>
 		{% endfor%}
 	    </tr>
     {% for form,food in formzip%}
+	{% if food == "Apples (1 fruit)"%}
+	<tr><td id = "subsection" colspan="10">FRUIT <br />For seasonal fruits marked *, please estimate your average use when the fruit is in season</td></tr>
+     <tr>
+	<td> <b>{{food}}</b> </td>
+	  {{form.food_freq}}
+     </tr>
+	 {% else %}
 			     <tr>
 				<td> <b>{{food}}</b> </td>
 				  {{form.food_freq}}
 			     </tr>
+			{% endif %}	 
 			{% endfor %}
+			<tr>
+			<td></td>
+			{% for option in freq_options %}
+			<td> {{ option }}</td>
+			{% endfor%}
+		    </tr>
 			 </table>
 <input type='submit' value='Submit' class='btn' />
 </form>

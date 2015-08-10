@@ -2,21 +2,35 @@
 
 
 {% block content %}
+<style>
+table {
+    border-collapse: collapse;
+	height:20%;
+	width: 300px;
+}
+
+table, th, td {
+    border: 1px solid black;
+	text-align: center;
+}
+</style>
 
 <h1>Vitamins</h1>
 
 <form method="POST" action=""> {% csrf_token %}
+<h4>Do you currently take multi-vitamins</h4>
+{{mform}}
 <h4>Not counting multi-vitamins, do you take any of the following preparations?</h4>
     {{ formset.management_form }}
-    {% for form,vitamin in formzip%}
-				<table>
+    {% for form,vitamin, choice in formzip%}
+				
        	    	<ul>
 				 <b>{{vitamin}}</b>
            		 {{ form.vitamin_Boolean }}
 				 {{ form.vitamin_Boolean.help_text}}
-        		 Dose per day:    {{ form.vitamin_Amount }}
+        		 Dose per day:  <table> <tr> {% for data in choice %}<td>{{data}}</td> {% endfor %}</tr><tr>{{ form.vitamin_Amount }} </tr> </table>
         		 </ul>
-			 </table>
+			
 	{% endfor %}
 <input type='submit' value='Submit' class='btn' />
 </form>

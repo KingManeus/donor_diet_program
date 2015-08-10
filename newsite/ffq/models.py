@@ -8,14 +8,18 @@ class User(models.Model):
     timestamp = models.DateTimeField(auto_now_add = True, auto_now=False)
     def __unicode__(self):
         return self.Please_repeat_Identification_Number
+         
         
+
 class VitaminData(models.Model):
     user = models.ForeignKey(User)
     vitamin_Name = models.CharField(max_length=50)
     vitamin_Boolean = models.CharField(max_length=30)
     vitamin_Amount = models.CharField(max_length=50)
+    vitamin_misc=models.CharField(max_length=50, blank=True, null=True)
     def __unicode__(self):
         return self.vitamin_Name
+        
 class FoodData(models.Model):
     user= models.ForeignKey(User)
     food_name=models.CharField(max_length=100)
