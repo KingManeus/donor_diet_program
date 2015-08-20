@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<style>
+table{
+	width:80%;
+}
+</style>
+<form method="POST" action=""> {% csrf_token %}
+	During the course of the last year, on average, how many times a week did you eat the following foods?
+	<table>
+		<tr><th>Food type</th> <th>Times/week</th> <th>Portion size</th></tr>
+		<tr><td>Vegetables (not incluidng potatoes)</td><td>{{form.veg_freq}}</td><td>medium serving</td></tr>
+		<tr><td>Salads</td><td>{{form.sal_freq}}</td><td>medium serving</td></tr>
+		<tr><td>Fruit and fruit products<br />(not including fruit juice)</td><td>{{form.fruit_freq}}</td><td>medium serving or 1 fruit</td></tr>
+		<tr><td>Fish and fish products</td><td>{{form.fish_freq}}</td><td>medium serving</td></tr>
+		<tr><td>Meat, meat products, and meat dishes<br />(including bacon, ham and chicken)</td><td>{{form.meat2_freq}}</td><td>medium serving</td></tr>
+	</table>
+<input type='submit' value='Submit' class='btn' />
+</form>
+{% endblock %}

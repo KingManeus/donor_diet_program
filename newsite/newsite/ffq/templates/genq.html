@@ -3,9 +3,92 @@
 
 {% block content %}
 
-
+<style>
+table{
+	width:55%;
+}
+</style>
 <form method="POST" action=""> {% csrf_token %}
-{{ form.as_p }}
+	<p>
+Are there any <b>OTHER</b> foods which you ate more than once a week?   {{ form.otherbool }}
+	</p>
+<b>If yes,</b> please list below
+<table>
+	<tr><td>Food</td><td>Serving Size</td><td>Number of times </br>eaten each week</td></tr>
+	<tr><td>{{form.other_food1}}</td><td>{{form.other_serving1}}</td><td>{{form.other_freq1}}</td></tr>
+	<tr><td>{{form.other_food2}}</td><td>{{form.other_serving2}}</td><td>{{form.other_freq2}}</td></tr>
+	<tr><td>{{form.other_food3}}</td><td>{{form.other_serving3}}</td><td>{{form.other_freq3}}</td></tr>
+	<tr><td>{{form.other_food4}}</td><td>{{form.other_serving4}}</td><td>{{form.other_freq4}}</td></tr>
+	<tr><td>{{form.other_food5}}</td><td>{{form.other_serving5}}</td><td>{{form.other_freq5}}</td></tr>
+	<tr><td>{{form.other_food6}}</td><td>{{form.other_serving6}}</td><td>{{form.other_freq6}}</td></tr>
+</table>
+<br />
+What type of milk do you most often use?
+<b>Select one only</b>
+{{form.milk_type}}
+<br />
+<br />
+How much milk do you drink each day, including milk with tea, coffee, cereals, etc?
+{{form.milk_amount}}
+<br />
+<br />
+Did you usually eat breakfast cereal (excluding porridge and Ready Brek mentioned earlier)?
+<table>
+{{form.cereal_bool}}
+</table>
+<b>If yes,</b>which brand and type of breakfast cereal, including museli, did you usually eat?<br /><b>List one or two types most often used</b>
+<table>
+	<tr><td>Brand e.g. Kellogg's'</td><td>Type e.g. cornflakes</td></tr>
+	<tr><td>{{form.cereal_brand1}}</td><td>{{form.cereal_type1}}</td></tr>
+	<tr><td>{{form.cereal_brand2}}</td><td>{{form.cereal_type2}}</td></tr>
+
+</table>
+<br />
+<br />
+What kind of fat did you most often use for frying, roasting, grilling, etc?
+<b>Select one only</b>
+	{{form.fat_fry}}
+<b>If you used vegetable oil,</b> please give name or type eg. corn, sunflower {{form.fat_fry_type}}
+<br />
+<br />
+<br />
+What kind of fat did you most often use for baking cakes, etc?
+<b>Select one only</b>
+	{{form.fat_bake}}
+<b>If you used margarine,</b> please give name or type eg. Flora, Stork {{form.fat_fry_type}}
+<br />
+<br />
+<br />
+How often did you eat food that was fried at home?
+{{form.fried_home}}
+<br />
+<br />
+How often did you eat fried food away from home?
+{{form.fried_away}}
+<br />
+<br />
+What did you do with visible fat on your meat?
+{{form.visible_fat}}
+<br />
+<br />
+How often do you eat grilled or roast meat? {{form.meat_freq}} times a week
+<br />
+<br />
+<br />
+How well cooked did you usually have grilled or roast meat?
+{{form.meat_level}}
+<br />
+<br />
+How often did you add salt to food while cooking? 
+{{form.salt_cooking}}
+<br />
+<br />
+How often did you add salt to any food at the table?
+{{form.salt_eating}}
+<br />
+<br />
+Did you regularly use a salt substiute? {{form.fake_salt}} <br />
+<b>If yes,</b> which brand? {{form.fake_salt_type}} <br />
 <input type='submit' value='Submit' class='btn' />
 </form>
 {% endblock %}

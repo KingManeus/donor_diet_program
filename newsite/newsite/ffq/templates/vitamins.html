@@ -5,8 +5,8 @@
 <style>
 table {
     border-collapse: collapse;
-	height:20%;
-	width: 300px;
+	height:80%;
+	width: 1300px;
 }
 
 table, th, td {
@@ -15,23 +15,25 @@ table, th, td {
 }
 </style>
 
-<h1>Vitamins</h1>
 
 <form method="POST" action=""> {% csrf_token %}
-<h4>Do you currently take multi-vitamins</h4>
-{{mform}}
-<h4>Not counting multi-vitamins, do you take any of the following preparations?</h4>
-    {{ formset.management_form }}
-    {% for form,vitamin, choice in formzip%}
-				
-       	    	<ul>
-				 <b>{{vitamin}}</b>
-           		 {{ form.vitamin_Boolean }}
-				 {{ form.vitamin_Boolean.help_text}}
-        		 Dose per day:  <table> <tr> {% for data in choice %}<td>{{data}}</td> {% endfor %}</tr><tr>{{ form.vitamin_Amount }} </tr> </table>
-        		 </ul>
-			
-	{% endfor %}
+Have you taken any vitamins, minerals, fish oils, fiber, or other food supplements during the past year? {{bform.vitamin_bool}}
+
+	<b>If yes,</b> please complete the table below. If you have taken more than 5 types of supplement please put the most frequently consumed brands first. 
+	<br />
+		<br />
+		{{ formset.management_form }}
+		<table>
+	<tr><th>Vitamin supplements</th><td colspan="10"><b>Average frequency</b><br /> Tick one box per line to show how often <br /> on average you consumed supplements<td></tr>
+		<tr><td><b>Name and brand</b><br />Please list full name, brand and strength</td><td><b>Dose</b><br />Please state number of pills, capsules or teaspoons consumed</td>
+			{% for option in freq_options%}
+			<td>{{option}}</td>
+			{% endfor%}
+		</tr>
+	{% for form in formset %}
+	<tr><td>{{form.name_brand}}</td><td>{{form.dose}}</td>{{form.vitamin_freq}}</tr>
+	{% endfor%}
+</table>
 <input type='submit' value='Submit' class='btn' />
 </form>
 {% endblock %}

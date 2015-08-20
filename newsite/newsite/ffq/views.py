@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import UserIDForm, VitaminForm, FoodForm, VitTotalChoices, MultiForm, BackForm
-from .models import User, VitaminData, FoodData
+from .forms import UserIDForm, VitaminForm, FoodForm, VitTotalChoices, BackForm, BackForm2,VitaminBoolForm
+from .models import User, VitaminData, FoodData, QuestionData
 from django.forms.models import modelformset_factory, inlineformset_factory
 from django.forms import formset_factory
 freq_options=["Never, or less than once per month", "1-3 per month", "1 per week", "2-4 per week", "5-6 per week", "1 per day", "2-3 per day", "4-5 per day", "6+ per day"]
@@ -24,33 +24,41 @@ def identification(request):
     return render(request,template,context)
     
 def vitamins(request):
-    VitaminList=["Vitamin A", "Pottasium", "Vitamin C", "Vitamin B6", "Vitamin E", "Calcium", "Selenium", "Vitamin D", "Zinc"]
-    vitaminFormset=formset_factory(VitaminForm, extra=len(VitaminList))
- 
-    #pull ID object from Identify table
     if 'testing' in request.session:
         user_id_repeat=request.session['testing']
-        user_object= get_object_or_404(User, pk=user_id_repeat)
-    #Present vitamin form to user and save info with ID tag 
-    i=0
-    mform=MultiForm(request.POST or None)
+        user_object=get_object_or_404(User, pk=user_id_repeat)
+    vitaminFormset=formset_factory(VitaminForm, extra=6)
     formset=vitaminFormset(request.POST or None)
-    formzip=zip(formset,VitaminList, VitTotalChoices)
-    last = len(formset)
-    for form in formset.forms:
-        if form.is_valid():
-            amount=form.cleaned_data['vitamin_Amount']
-            boolean=form.cleaned_data['vitamin_Boolean']
-            new_data=VitaminData(user=user_object, vitamin_Boolean=boolean, vitamin_Amount=amount, vitamin_Name=VitaminList[i],)
-            i=i+1
-            new_data.save()
-            if i==last:
-                return HttpResponseRedirect("genq")
-    context ={"formset": formset,"VitaminList": VitaminList, "formzip": formzip, "VitTotalChoices": VitTotalChoices, "mform": mform,}
+    bform=VitaminBoolForm(request.POST or None)
+    if bform.is_valid():
+        bform_data=bform.cleaned_data['vitamin_bool']
+       # new_data=QuestionData(user=user_object, field_number="vitamin_bool", field_answer=bform_data)
+        #new_data.save()
+        for form in formset.forms:
+            if form.has_changed():
+                print "yes"
+                if form.is_valid():
+                    print "saved"
+                    name_brand=form.cleaned_data['name_brand']
+                    dose=form.cleaned_data['dose']
+                    vitamin_freq=form.cleaned_data['vitamin_freq']
+                    vit_data=VitaminData(user=user_object, vitamin_Name=name_brand, vitamin_Freq=vitamin_freq, vitamin_Dose=dose)
+                    vit_data.save()
+        return HttpResponse("Thank You! Your response has been recorded")
+    context ={"formset": formset,"freq_options":freq_options, "bform":bform}
     template = "vitamins.html"
     return render(request,template,context)
 def genq(request):
+    if 'testing' in request.session:
+        user_id_repeat=request.session['testing']
+        user_object=get_object_or_404(User, pk=user_id_repeat)
     form=BackForm(request.POST or None)
+    if form.is_valid():
+        for i in form.cleaned_data:
+            form_data=form.cleaned_data[i]
+            new_data=QuestionData(user=user_object, field_number=i, field_answer=form_data)
+            new_data.save()
+        return HttpResponseRedirect("genq2")
     context ={"form":form}
     template = "genq.html"
     return render(request,template,context)
@@ -202,6 +210,16 @@ def sweetsetc(request):
     template = "sweets.html"
     return render(request,template,context)
 def genq2(request):
-    context ={}
-    template = ""
-    return HttpResponse("Final general questions go here")
+    if 'testing' in request.session:
+        user_id_repeat=request.session['testing']
+        user_object=get_object_or_404(User, pk=user_id_repeat)
+    form=BackForm2(request.POST or None)
+    if form.is_valid():
+        for i in form.cleaned_data:
+            form_data=form.cleaned_data[i]
+            new_data=QuestionData(user=user_object, field_number=i, field_answer=form_data)
+            new_data.save()
+        return HttpResponseRedirect("vitamins")
+    context ={"form":form}
+    template = "genq2.html"
+    return render(request,template,context)
